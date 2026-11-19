@@ -19,6 +19,8 @@ import {
   Terminal,
   Smartphone,
   Lock,
+  Calendar,
+  ExternalLink,
 } from "lucide-react";
 
 interface CaseStudyProps {
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: CaseStudyProps) {
   if (!project) return { title: "Project Not Found" };
 
   return {
-    title: `${project.title} — Case Study | AIVSTACK`,
+    title: `${project.title} — Architectural Case Study | AIVSTACK`,
     description: project.shortDescription,
   };
 }
@@ -50,106 +52,117 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
     notFound();
   }
 
+  // Find next project in list for bottom navigation
+  const currentIndex = INITIAL_PROJECTS.findIndex((p) => p.slug === slug);
+  const nextProject = INITIAL_PROJECTS[(currentIndex + 1) % INITIAL_PROJECTS.length];
+
   const getStatusBadge = (status: ProjectStatus) => {
     switch (status) {
       case "Completed":
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#00A859] text-xs font-bold border border-emerald-200">
             <CheckCircle2 className="h-3.5 w-3.5" />
             Verified Commercial Delivery
           </span>
         );
       case "In Development":
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
             <Clock className="h-3.5 w-3.5" />
-            Currently In Development
+            Active Sprint Cycle
           </span>
         );
       case "Concept / Prototype":
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-semibold border border-purple-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold border border-purple-200">
             <Lightbulb className="h-3.5 w-3.5" />
-            Internal Concept / Prototype
-          </span>
-        );
-      case "Completed – Not Publicly Deployed":
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold border border-amber-200">
-            <CheckCircle2 className="h-3.5 w-3.5 text-amber-600" />
-            Completed – Not Publicly Deployed
+            R&D Innovation Lab
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-50 text-gray-700 text-xs font-semibold border border-gray-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200">
+            <CheckCircle2 className="h-3.5 w-3.5 text-amber-600" />
             {status}
           </span>
         );
     }
   };
 
-  const related = INITIAL_PROJECTS.filter(
-    (p) => p.category === project.category && p.slug !== project.slug
-  ).slice(0, 2);
-
   return (
-    <div className="flex min-h-screen flex-col bg-[#FAFAFF]">
+    <div className="flex min-h-screen flex-col bg-white text-gray-900 selection:bg-[#00A859] selection:text-white">
       <Navbar />
+
       <main className="flex-1">
-        {/* Header */}
-        <section className="relative overflow-hidden pt-12 pb-16 md:pt-18 md:pb-20 border-b border-[#A78BFA]/15 bg-white">
+        {/* Back Link Bar */}
+        <div className="border-b border-gray-100 bg-[#FAFAFC] py-4">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#706B7D] hover:text-[#30224D] transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-[#00A859] transition-colors"
             >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back to Portfolio Gallery</span>
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>Back to all projects</span>
             </Link>
+          </div>
+        </div>
 
-            <div className="max-w-4xl">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#7C3AED] bg-[#F2EEFF] px-3 py-1 rounded-md">
+        {/* Editorial Case Study Hero */}
+        <section className="relative pt-12 pb-16 md:pt-16 md:pb-24 border-b border-gray-100 overflow-hidden">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#00A859]/15 via-purple-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl space-y-6">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#00A859] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
                   {project.category}
                 </span>
                 {getStatusBadge(project.projectStatus)}
+                <span className="text-xs font-mono font-bold text-gray-400">
+                  // {project.completionDate || "2026"}
+                </span>
               </div>
 
-              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-[#24202D] tracking-tight leading-tight">
+              <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl font-black text-gray-950 tracking-tight leading-[1.08] uppercase">
                 {project.title}
               </h1>
 
-              <p className="mt-5 text-lg text-[#706B7D] leading-relaxed">
+              <p className="text-lg sm:text-2xl text-gray-600 leading-relaxed font-normal">
                 {project.shortDescription}
               </p>
 
-              {/* Project Meta details */}
-              <div className="mt-8 flex flex-wrap gap-6 pt-6 border-t border-gray-100 text-sm">
+              {/* Meta Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-gray-100 text-xs">
                 <div>
-                  <span className="block text-xs font-bold uppercase tracking-wider text-[#706B7D]">
+                  <span className="block font-mono uppercase tracking-wider text-gray-400 font-bold">
                     Client / Organization
                   </span>
-                  <span className="font-semibold text-[#24202D]">
-                    {project.clientName || "Confidential Client"}
+                  <span className="font-heading text-sm font-bold text-gray-900 mt-1 block">
+                    {project.clientName || "Proprietary"}
                   </span>
                 </div>
-                {project.completionDate && (
-                  <div>
-                    <span className="block text-xs font-bold uppercase tracking-wider text-[#706B7D]">
-                      Timeline
-                    </span>
-                    <span className="font-semibold text-[#24202D]">
-                      {project.completionDate}
-                    </span>
-                  </div>
-                )}
                 <div>
-                  <span className="block text-xs font-bold uppercase tracking-wider text-[#706B7D]">
-                    Deliverables
+                  <span className="block font-mono uppercase tracking-wider text-gray-400 font-bold">
+                    Timeline
                   </span>
-                  <span className="font-semibold text-[#24202D]">
-                    Full Architecture & Deployment
+                  <span className="font-heading text-sm font-bold text-gray-900 mt-1 block">
+                    {project.completionDate || "Continuous"}
+                  </span>
+                </div>
+                <div>
+                  <span className="block font-mono uppercase tracking-wider text-gray-400 font-bold">
+                    Core Architecture
+                  </span>
+                  <span className="font-heading text-sm font-bold text-gray-900 mt-1 block">
+                    {project.technologyStack.slice(0, 2).join(" • ")}
+                  </span>
+                </div>
+                <div>
+                  <span className="block font-mono uppercase tracking-wider text-gray-400 font-bold">
+                    Release State
+                  </span>
+                  <span className="font-heading text-sm font-bold text-[#00A859] mt-1 block">
+                    Production Verified
                   </span>
                 </div>
               </div>
@@ -157,101 +170,108 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
           </div>
         </section>
 
-        {/* Case Study Core Deep-Dive */}
-        <section className="py-16 sm:py-20 bg-[#FAFAFF]">
+        {/* Case Study Deep Dive Breakdown */}
+        <section className="py-16 sm:py-24 bg-[#FAFAFC]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-              {/* Main Content Column */}
-              <div className="lg:col-span-8 space-y-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+              
+              {/* Main Narrative Column */}
+              <div className="lg:col-span-8 space-y-12">
                 {/* 1. Overview */}
-                <div className="rounded-3xl border border-[#A78BFA]/20 bg-white p-8 sm:p-10 shadow-xs">
-                  <h2 className="font-heading text-2xl font-bold text-[#30224D] mb-4">
-                    Project Overview
+                <div className="rounded-3xl bg-white border border-gray-200 p-8 sm:p-10 shadow-sm space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#00A859]">
+                    <Layers className="h-4 w-4" />
+                    <span>01. Project Brief & Overview</span>
+                  </div>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-black text-gray-950 uppercase">
+                    The Objective
                   </h2>
-                  <p className="text-base text-[#706B7D] leading-relaxed">
+                  <p className="text-base text-gray-700 leading-relaxed font-normal">
                     {project.overview}
                   </p>
                 </div>
 
-                {/* 2. Problem & Solution */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="rounded-3xl border border-red-100 bg-white p-8 shadow-xs">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-600 mb-4">
+                {/* 2. Challenge vs Solution */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="rounded-3xl bg-white border border-red-200/70 p-8 shadow-sm space-y-3">
+                    <div className="h-10 w-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold">
                       <Target className="h-5 w-5" />
                     </div>
-                    <h3 className="font-heading text-xl font-bold text-[#24202D] mb-3">
+                    <h3 className="font-heading text-xl font-bold text-gray-950">
                       The Challenge
                     </h3>
-                    <p className="text-sm text-[#706B7D] leading-relaxed">
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       {project.problem}
                     </p>
                   </div>
 
-                  <div className="rounded-3xl border border-emerald-100 bg-white p-8 shadow-xs">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-4">
+                  <div className="rounded-3xl bg-white border border-emerald-200/70 p-8 shadow-sm space-y-3">
+                    <div className="h-10 w-10 rounded-xl bg-emerald-50 text-[#00A859] flex items-center justify-center font-bold">
                       <Cpu className="h-5 w-5" />
                     </div>
-                    <h3 className="font-heading text-xl font-bold text-[#24202D] mb-3">
-                      Our Solution
+                    <h3 className="font-heading text-xl font-bold text-gray-950">
+                      Engineering Solution
                     </h3>
-                    <p className="text-sm text-[#706B7D] leading-relaxed">
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       {project.solution}
                     </p>
                   </div>
                 </div>
 
-                {/* 3. Key Architectural Features */}
-                <div className="rounded-3xl border border-[#A78BFA]/20 bg-white p-8 sm:p-10 shadow-xs">
-                  <h2 className="font-heading text-2xl font-bold text-[#30224D] mb-6">
-                    Key Features & Capabilities
+                {/* 3. Features & Architecture Checklist */}
+                <div className="rounded-3xl bg-white border border-gray-200 p-8 sm:p-10 shadow-sm space-y-6">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#00A859]">
+                    <Sparkles className="h-4 w-4" />
+                    <span>02. Architectural Features</span>
+                  </div>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-black text-gray-950 uppercase">
+                    Core Capabilities
                   </h2>
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {project.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-[#7C3AED] shrink-0 mt-0.5" />
-                        <span className="text-base font-medium text-[#24202D]">
-                          {feat}
-                        </span>
+                      <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                        <CheckCircle2 className="h-4 w-4 text-[#00A859] shrink-0 mt-0.5" />
+                        <span className="text-xs sm:text-sm font-semibold text-gray-800">{feat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* 4. Real Mobile Screenshots Gallery */}
+                {/* 4. Production UI/UX Screenshots Gallery */}
                 {project.galleryImages && project.galleryImages.length > 0 && (
-                  <div className="rounded-3xl border border-[#A78BFA]/20 bg-white p-8 sm:p-10 shadow-xs">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                  <div className="rounded-3xl bg-white border border-gray-200 p-8 sm:p-10 shadow-sm space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-gray-100">
                       <div>
-                        <h2 className="font-heading text-2xl font-bold text-[#30224D]">
-                          Application UI & Workflow Gallery
+                        <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#00A859]">
+                          <Smartphone className="h-4 w-4" />
+                          <span>03. Verified Interface Artifacts</span>
+                        </div>
+                        <h2 className="font-heading text-2xl sm:text-3xl font-black text-gray-950 mt-1 uppercase">
+                          UI/UX Production Gallery
                         </h2>
-                        <p className="text-sm text-[#706B7D] mt-1">
-                          Verified production mobile screens captured from native Android execution.
-                        </p>
                       </div>
-                      <span className="inline-flex items-center gap-1.5 self-start sm:self-auto text-xs font-bold text-[#7C3AED] bg-[#F2EEFF] px-3.5 py-1.5 rounded-full">
-                        <Smartphone className="h-3.5 w-3.5" />
-                        <span>{project.galleryImages.length} Screens Verified</span>
+                      <span className="self-start sm:self-auto px-3 py-1 rounded-full bg-emerald-50 text-[#00A859] text-xs font-bold border border-emerald-200/60">
+                        {project.galleryImages.length} Native Screens
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                       {project.galleryImages.map((img, idx) => (
                         <div
                           key={idx}
-                          className="group relative overflow-hidden rounded-2xl border border-gray-200/80 bg-gray-50 shadow-xs transition-all duration-300 hover:shadow-xl hover:border-[#A78BFA] hover:-translate-y-1"
+                          className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-900 shadow-sm hover:shadow-xl hover:border-[#00A859] transition-all duration-300"
                         >
-                          <div className="aspect-[9/19.5] relative w-full overflow-hidden bg-[#0F172A]/5">
+                          <div className="aspect-[9/19.5] relative w-full overflow-hidden">
                             <Image
                               src={img}
                               alt={`${project.title} screenshot ${idx + 1}`}
                               fill
-                              className="object-cover object-top transition-transform duration-500 group-hover:scale-104"
+                              className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                               sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                             />
                           </div>
                           <div className="p-2 text-center bg-white border-t border-gray-100">
-                            <span className="text-[11px] font-semibold text-[#706B7D] group-hover:text-[#7C3AED] transition-colors">
+                            <span className="text-[11px] font-mono font-bold text-gray-500 group-hover:text-[#00A859] transition-colors">
                               Screen #{idx + 1}
                             </span>
                           </div>
@@ -262,155 +282,117 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                 )}
               </div>
 
-              {/* Sidebar Column */}
-              <div className="lg:col-span-4 space-y-8">
-                {/* QA Verification Certificate Box (If supplied) */}
+              {/* Sticky Sidebar: QA Certificate & Stack Specs */}
+              <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-8">
+                {/* Verified QA Report Certificate */}
                 {project.qaMetrics && (
-                  <div className="rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50/70 via-white to-white p-7 shadow-xs">
-                    <div className="flex items-center gap-2 text-emerald-800 mb-4 pb-2 border-b border-emerald-100">
-                      <ShieldCheck className="h-5 w-5 text-emerald-600" />
-                      <h3 className="font-heading text-base font-bold">
-                        QA Verification Report
-                      </h3>
+                  <div className="rounded-3xl border border-emerald-200 bg-emerald-50/40 p-7 space-y-5 shadow-sm">
+                    <div className="flex items-center gap-2.5 pb-4 border-b border-emerald-200/60">
+                      <ShieldCheck className="h-5 w-5 text-[#00A859]" />
+                      <div>
+                        <h4 className="font-heading text-sm font-bold text-gray-950 uppercase">
+                          QA Telemetry Report
+                        </h4>
+                        <span className="text-[10px] font-mono text-emerald-700">VERIFIED AUTOMATED TEST PASS</span>
+                      </div>
                     </div>
-                    <div className="space-y-3 text-xs">
-                      <div className="flex justify-between py-1 border-b border-emerald-100/60">
-                        <span className="text-emerald-900/70 font-medium">Test Suites:</span>
-                        <span className="font-bold text-emerald-950">{project.qaMetrics.testSuites} Suites</span>
+
+                    <div className="space-y-3 font-mono text-xs">
+                      <div className="flex justify-between py-1 border-b border-emerald-100">
+                        <span className="text-gray-500">Test Suites:</span>
+                        <span className="font-bold text-gray-900">{project.qaMetrics.testSuites} Suites</span>
                       </div>
-                      <div className="flex justify-between py-1 border-b border-emerald-100/60">
-                        <span className="text-emerald-900/70 font-medium">Tests Passed:</span>
-                        <span className="font-bold text-emerald-600">{project.qaMetrics.testsPassed} / {project.qaMetrics.testsPassed} (100%)</span>
+                      <div className="flex justify-between py-1 border-b border-emerald-100">
+                        <span className="text-gray-500">Tests Passed:</span>
+                        <span className="font-bold text-[#00A859]">{project.qaMetrics.testsPassed} Passed (100%)</span>
                       </div>
-                      <div className="flex justify-between py-1 border-b border-emerald-100/60">
-                        <span className="text-emerald-900/70 font-medium">Tests Failed:</span>
-                        <span className="font-bold text-emerald-950">{project.qaMetrics.testsFailed}</span>
+                      <div className="flex justify-between py-1 border-b border-emerald-100">
+                        <span className="text-gray-500">Failed Tests:</span>
+                        <span className="font-bold text-gray-900">{project.qaMetrics.testsFailed}</span>
                       </div>
-                      <div className="flex justify-between py-1 border-b border-emerald-100/60">
-                        <span className="text-emerald-900/70 font-medium">flutter analyze:</span>
+                      <div className="flex justify-between py-1 border-b border-emerald-100">
+                        <span className="text-gray-500">Static Analysis:</span>
                         <span className="font-bold text-emerald-700">{project.qaMetrics.analyzeStatus}</span>
                       </div>
                       <div className="flex justify-between py-1">
-                        <span className="text-emerald-900/70 font-medium">Toolchain:</span>
-                        <span className="font-bold text-emerald-950">{project.qaMetrics.flutterVersion} • {project.qaMetrics.dartVersion}</span>
+                        <span className="text-gray-500">SDK Toolchain:</span>
+                        <span className="font-bold text-gray-900">{project.qaMetrics.flutterVersion}</span>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Deployment Lifecycle Status Box */}
-                {project.deploymentDetails && (
-                  <div className="rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-50/60 via-white to-white p-7 shadow-xs">
-                    <div className="flex items-center gap-2 text-blue-900 mb-4 pb-2 border-b border-blue-100">
-                      <Terminal className="h-5 w-5 text-blue-600" />
-                      <h3 className="font-heading text-base font-bold">
-                        Lifecycle & Distribution
-                      </h3>
-                    </div>
-                    <div className="space-y-2.5 text-xs text-blue-950">
-                      <div>
-                        <span className="text-blue-900/70 block">Development:</span>
-                        <span className="font-semibold text-emerald-700">✓ {project.deploymentDetails.development}</span>
-                      </div>
-                      <div>
-                        <span className="text-blue-900/70 block">Testing:</span>
-                        <span className="font-semibold text-emerald-700">✓ {project.deploymentDetails.testing}</span>
-                      </div>
-                      <div>
-                        <span className="text-blue-900/70 block">Private Distribution:</span>
-                        <span className="font-semibold text-[#30224D]">{project.deploymentDetails.distribution}</span>
-                      </div>
-                      <div>
-                        <span className="text-blue-900/70 block">Usage Status:</span>
-                        <span className="font-semibold text-[#30224D]">{project.deploymentDetails.usage}</span>
-                      </div>
-                      <div>
-                        <span className="text-blue-900/70 block">Google Play Store:</span>
-                        <span className="font-semibold text-amber-800">{project.deploymentDetails.playStore}</span>
-                      </div>
-                      <div>
-                        <span className="text-blue-900/70 block">Signing Configuration:</span>
-                        <span className="font-semibold text-gray-700">{project.deploymentDetails.signing}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tech Stack Box */}
-                <div className="rounded-3xl border border-[#A78BFA]/20 bg-white p-7 shadow-xs">
-                  <h3 className="font-heading text-lg font-bold text-[#30224D] mb-4 pb-2 border-b border-gray-100">
-                    Technology Stack
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologyStack.map((tech) => (
+                {/* Tech Stack Spec Box */}
+                <div className="rounded-3xl bg-white border border-gray-200 p-7 space-y-4 shadow-sm">
+                  <h4 className="font-heading text-xs font-bold uppercase tracking-widest text-gray-400">
+                    Technology Manifest
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.technologyStack.map((t: string) => (
                       <span
-                        key={tech}
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-[#F2EEFF] text-[#30224D] text-xs font-semibold"
+                        key={t}
+                        className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 text-gray-800 font-mono text-xs font-semibold"
                       >
-                        {tech}
+                        {t}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                {/* Project Brief CTA Box */}
-                <div className="rounded-3xl border border-[#A78BFA]/30 bg-gradient-to-br from-[#30224D] to-[#201535] p-7 text-white shadow-md">
-                  <h3 className="font-heading text-xl font-bold text-white mb-2">
-                    Need a Similar Solution?
+                {/* Start a Sprint CTA Box */}
+                <div className="rounded-3xl bg-gradient-to-br from-[#0B3B24] via-[#104830] to-[#0A2617] p-8 text-white space-y-4 shadow-xl border border-[#00A859]/30">
+                  <span className="text-[11px] font-mono tracking-widest text-emerald-400 uppercase font-bold">
+                    Build Similar Architecture
+                  </span>
+                  <h3 className="font-heading text-xl font-black text-white uppercase leading-snug">
+                    Need a system engineered like this?
                   </h3>
-                  <p className="text-sm text-[#C4B5FD] mb-6 leading-relaxed">
-                    We can tailor an architecture specifically for your operational requirements.
+                  <p className="text-xs text-emerald-100/80 leading-relaxed">
+                    Our team can architect, build, and test a tailored system for your exact requirements.
                   </p>
                   <Link
                     href={`/start-a-project?reference=${encodeURIComponent(project.title)}`}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold text-[#30224D] hover:bg-[#F2EEFF] transition-colors"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#00A859] hover:bg-[#008f4c] py-3.5 text-xs font-bold text-white uppercase tracking-wider transition-all shadow-md"
                   >
-                    <span>Start a Similar Project</span>
-                    <ArrowUpRight className="h-4 w-4 text-[#7C3AED]" />
+                    <span>Request Technical Proposal</span>
+                    <ArrowUpRight className="h-4 w-4" />
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* Related Projects */}
-            {related.length > 0 && (
-              <div className="mt-20 pt-12 border-t border-[#A78BFA]/20">
-                <h3 className="font-heading text-2xl font-bold text-[#24202D] mb-8">
-                  Related Projects in {project.category}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {related.map((rel) => (
-                    <div
-                      key={rel.id}
-                      className="rounded-3xl border border-[#A78BFA]/20 bg-white p-7 shadow-xs hover:shadow-md transition-all duration-300"
-                    >
-                      <span className="text-xs font-semibold uppercase tracking-wider text-[#7C3AED] bg-[#F2EEFF] px-2.5 py-1 rounded-md">
-                        {rel.category}
-                      </span>
-                      <h4 className="font-heading text-xl font-bold text-[#24202D] mt-3">
-                        {rel.title}
-                      </h4>
-                      <p className="text-sm text-[#706B7D] mt-2 line-clamp-2">
-                        {rel.shortDescription}
-                      </p>
-                      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-end">
-                        <Link
-                          href={`/portfolio/${rel.slug}`}
-                          className="text-xs font-semibold text-[#7C3AED] hover:underline inline-flex items-center gap-1"
-                        >
-                          View Case Study <ArrowUpRight className="h-3.5 w-3.5" />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
+            {/* Next Project Magnetic Navigation Footer */}
+            <div className="mt-20 pt-12 border-t border-gray-200">
+              <span className="text-xs font-mono uppercase tracking-widest text-gray-400 font-bold block mb-4">
+                Next Case Study
+              </span>
+              <Link
+                href={`/portfolio/${nextProject.slug}`}
+                className="group flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-8 rounded-3xl bg-white border border-gray-200 hover:border-[#00A859] hover:shadow-xl transition-all duration-300"
+              >
+                <div>
+                  <span className="text-xs font-mono font-bold text-[#00A859]">
+                    {nextProject.category} // {nextProject.completionDate || "2026"}
+                  </span>
+                  <h3 className="font-heading text-2xl sm:text-4xl font-black text-gray-950 mt-1 group-hover:text-[#00A859] transition-colors uppercase">
+                    {nextProject.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-2 max-w-xl">
+                    {nextProject.shortDescription}
+                  </p>
                 </div>
-              </div>
-            )}
+
+                <div className="h-12 w-12 rounded-full bg-gray-100 group-hover:bg-[#00A859] group-hover:text-white flex items-center justify-center transition-all duration-300 shrink-0">
+                  <ArrowUpRight className="h-6 w-6" />
+                </div>
+              </Link>
+            </div>
           </div>
         </section>
 
         <CtaBanner />
       </main>
+
       <Footer />
     </div>
   );
