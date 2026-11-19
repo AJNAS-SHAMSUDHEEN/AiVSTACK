@@ -1,0 +1,74 @@
+<svg width="800" height="1000" viewBox="0 0 800 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="1000" rx="40" fill="#0C121E"/>
+  <rect x="2" y="2" width="796" height="996" rx="38" stroke="#1E293B" stroke-width="2"/>
+  
+  <!-- Subtle Ambient Glow -->
+  <circle cx="400" cy="280" r="280" fill="#3B82F6" fill-opacity="0.10" filter="blur(80px)"/>
+  <circle cx="650" cy="700" r="220" fill="#8B5CF6" fill-opacity="0.08" filter="blur(90px)"/>
+  
+  <!-- Management Dashboard Header -->
+  <rect x="48" y="48" width="704" height="52" rx="16" fill="#162238" stroke="#253552" stroke-width="1"/>
+  <circle cx="80" cy="74" r="6" fill="#60A5FA"/>
+  <rect x="100" y="66" width="120" height="16" rx="6" fill="#0C121E"/>
+  <rect x="520" y="60" width="200" height="28" rx="8" fill="#0C121E"/>
+  <text x="540" y="78" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Admin Portal // v1.2</text>
+
+  <!-- Content Deck Wireframe -->
+  <g transform="translate(48, 130)">
+    <!-- Category Pill -->
+    <rect x="0" y="0" width="260" height="34" rx="17" fill="#1E293B" stroke="#3B82F6" stroke-opacity="0.5"/>
+    <text x="20" y="22" fill="#93C5FD" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1">EDUCATION MANAGEMENT SOFTWARE</text>
+    
+    <!-- Title -->
+    <text x="0" y="90" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="34" font-weight="800">Madrasa Administration</text>
+    <text x="0" y="132" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="34" font-weight="800">&amp; Academic Operations</text>
+    <text x="0" y="172" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="15">Centralized operational ledger for student records, attendance, and fee tracking.</text>
+
+    <!-- Stat Metric Tiles -->
+    <g transform="translate(0, 210)">
+      <rect x="0" y="0" width="220" height="100" rx="18" fill="#162238" stroke="#253552"/>
+      <text x="24" y="38" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">ENROLLED STUDENTS</text>
+      <text x="24" y="76" fill="#60A5FA" font-family="system-ui, sans-serif" font-size="28" font-weight="800">450+</text>
+
+      <rect x="242" y="0" width="220" height="100" rx="18" fill="#162238" stroke="#253552"/>
+      <text x="266" y="38" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">ACTIVE CLASSES</text>
+      <text x="266" y="76" fill="#A78BFA" font-family="system-ui, sans-serif" font-size="28" font-weight="800">18</text>
+
+      <rect x="484" y="0" width="220" height="100" rx="18" fill="#162238" stroke="#253552"/>
+      <text x="508" y="38" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DAILY ATTENDANCE</text>
+      <text x="508" y="76" fill="#34D399" font-family="system-ui, sans-serif" font-size="28" font-weight="800">96.4%</text>
+    </g>
+
+    <!-- Administrative Table Wireframe Mockup -->
+    <rect x="0" y="334" width="704" height="240" rx="20" fill="#162238" stroke="#253552"/>
+    <text x="32" y="374" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="15" font-weight="700">Student Registry &amp; Ledger Queue</text>
+    <rect x="32" y="394" width="640" height="1" fill="#253552"/>
+
+    <!-- Row 1 -->
+    <circle cx="52" cy="426" r="12" fill="#253552"/>
+    <text x="76" y="430" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Ahmed Bilal — Grade 6</text>
+    <rect x="540" y="414" width="100" height="24" rx="8" fill="#064E3B"/>
+    <text x="562" y="430" fill="#34D399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">FEES PAID</text>
+
+    <!-- Row 2 -->
+    <circle cx="52" cy="466" r="12" fill="#253552"/>
+    <text x="76" y="470" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Zayn Malik — Grade 8</text>
+    <rect x="540" y="454" width="100" height="24" rx="8" fill="#064E3B"/>
+    <text x="562" y="470" fill="#34D399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">FEES PAID</text>
+
+    <!-- Row 3 -->
+    <circle cx="52" cy="506" r="12" fill="#253552"/>
+    <text x="76" y="510" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Umar Farooq — Grade 5</text>
+    <rect x="540" y="494" width="100" height="24" rx="8" fill="#451A03"/>
+    <text x="560" y="510" fill="#FBBF24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">DUE SOON</text>
+  </g>
+
+  <!-- Technical Spec Footer Pill -->
+  <g transform="translate(48, 880)">
+    <rect width="704" height="60" rx="16" fill="#162238" stroke="#253552"/>
+    <text x="28" y="36" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Stack:</text>
+    <text x="80" y="36" fill="#60A5FA" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Next.js • TypeScript • PostgreSQL • Prisma ORM</text>
+    <rect x="540" y="15" width="138" height="30" rx="8" fill="#1E293B"/>
+    <text x="556" y="34" fill="#60A5FA" font-family="system-ui, sans-serif" font-size="11" font-weight="700">IN DEVELOPMENT</text>
+  </g>
+</svg>

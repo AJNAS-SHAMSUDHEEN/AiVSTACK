@@ -1,0 +1,303 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: enquiries
+// Document ID: Auto-generated document ID
+// Fields:
+//   - fullName: string (required, 1-100 chars)
+//   - email: string (required, 3-150 chars, valid email format)
+//   - country: string (required, 1-100 chars)
+//   - description: string (required, 1-5000 chars)
+//   - status: string (required, must be 'New' on creation; valid enum on update)
+//   - company: string (optional, 0-150 chars)
+//   - serviceId: string (optional, 0-100 chars)
+//   - serviceTitle: string (optional, 0-150 chars)
+//   - projectTitle: string (optional, 0-200 chars)
+//   - budgetRange: string (optional, 0-100 chars)
+//   - expectedDeadline: string (optional, 0-100 chars)
+//   - referenceUrl: string (optional, 0-500 chars)
+//   - internalNotes: string (optional, 0-5000 chars, admin only)
+//   - followUpAt: string (optional, 0-100 chars, admin only)
+//   - createdAt: string | timestamp (optional, 0-50 chars if string)
+//   - updatedAt: string | timestamp (optional, 0-50 chars if string)
+//   - serverTimestamp: timestamp (optional)
+//
+// Collection: projects
+// Document ID: slug or project ID
+// Fields:
+//   - id: string (optional, 0-100 chars)
+//   - slug: string (required, 1-100 chars)
+//   - title: string (required, 1-200 chars)
+//   - category: string (required, 1-100 chars)
+//   - projectStatus: string (optional, 0-100 chars)
+//   - shortDescription: string (optional, 0-2000 chars)
+//   - overview: string (optional, 0-10000 chars)
+//   - problem: string (optional, 0-10000 chars)
+//   - solution: string (optional, 0-10000 chars)
+//   - features: list of strings (optional, <= 50 items)
+//   - technologyStack: list of strings (optional, <= 50 items)
+//   - thumbnailUrl: string (optional, 0-2000 chars)
+//   - galleryImages: list of strings (optional, <= 50 items)
+//   - clientName: string (optional, 0-200 chars)
+//   - completionDate: string (optional, 0-100 chars)
+//   - isFeatured: bool (optional)
+//   - qaMetrics: map (optional)
+//   - deploymentDetails: map (optional)
+//   - createdAt: string | timestamp (optional)
+//   - updatedAt: string | timestamp (optional)
+//
+// Collection: settings
+// Document ID: 'general'
+// Fields:
+//   - companyEmail: string (optional, 0-150 chars)
+//   - whatsappContact: string (optional, 0-50 chars)
+//   - phoneNumber: string (optional, 0-50 chars)
+//   - address: string (optional, 0-300 chars)
+//   - githubUrl: string (optional, 0-500 chars)
+//   - linkedinUrl: string (optional, 0-500 chars)
+//   - twitterUrl: string (optional, 0-500 chars)
+//   - instagramUrl: string (optional, 0-500 chars)
+//   - tagline: string (optional, 0-500 chars)
+//   - brandDescriptor: string (optional, 0-500 chars)
+//   - updatedAt: string | timestamp (optional)
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the user is authenticated (admin access)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated();
+    }
+
+    // Validate string field length
+    function validStringLength(field, minLen, maxLen) {
+      return (field in request.resource.data) &&
+             request.resource.data[field] is string &&
+             request.resource.data[field].size() >= minLen &&
+             request.resource.data[field].size() <= maxLen;
+    }
+
+    // Validate optional string field
+    function isValidOptionalString(field, minLen, maxLen) {
+      return !(field in request.resource.data) ||
+             (request.resource.data[field] is string &&
+              request.resource.data[field].size() >= minLen &&
+              request.resource.data[field].size() <= maxLen);
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      return email is string &&
+             email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // Validate optional timestamp or ISO date string
+    function isValidTimestampOrString(field) {
+      return !(field in request.resource.data) ||
+             (request.resource.data[field] is timestamp) ||
+             (request.resource.data[field] is string && request.resource.data[field].size() <= 50);
+    }
+
+    // Validate serverTimestamp field
+    function isValidServerTimestamp(field) {
+      return !(field in request.resource.data) ||
+             (request.resource.data[field] is timestamp);
+    }
+
+    // Validate list type and size limit
+    function isValidList(listVal, maxSize) {
+      return listVal is list && listVal.size() <= maxSize;
+    }
+
+    // Allowed status values for enquiries
+    function isValidEnquiryStatus(status) {
+      return status in [
+        'New',
+        'Under Review',
+        'Contacted',
+        'Discussion',
+        'Quotation Sent',
+        'Approved',
+        'Rejected',
+        'Archived'
+      ];
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    // Public enquiry creation validator
+    function isValidEnquiryCreate(data) {
+      return (
+        data.keys().hasAll(['fullName', 'email', 'country', 'description', 'status']) &&
+        data.keys().hasOnly([
+          'fullName', 'email', 'country', 'description', 'status',
+          'company', 'serviceId', 'serviceTitle', 'projectTitle',
+          'budgetRange', 'expectedDeadline', 'referenceUrl',
+          'createdAt', 'updatedAt', 'serverTimestamp'
+        ]) &&
+        validStringLength('fullName', 1, 100) &&
+        data.email is string &&
+        data.email.size() <= 150 &&
+        isValidEmail(data.email) &&
+        validStringLength('country', 1, 100) &&
+        validStringLength('description', 1, 5000) &&
+        data.status == 'New' &&
+        isValidOptionalString('company', 0, 150) &&
+        isValidOptionalString('serviceId', 0, 100) &&
+        isValidOptionalString('serviceTitle', 0, 150) &&
+        isValidOptionalString('projectTitle', 0, 200) &&
+        isValidOptionalString('budgetRange', 0, 100) &&
+        isValidOptionalString('expectedDeadline', 0, 100) &&
+        isValidOptionalString('referenceUrl', 0, 500) &&
+        isValidTimestampOrString('createdAt') &&
+        isValidTimestampOrString('updatedAt') &&
+        isValidServerTimestamp('serverTimestamp')
+      );
+    }
+
+    // Admin enquiry update validator
+    function isValidEnquiryUpdate(data) {
+      return (
+        data.keys().hasAll(['fullName', 'email', 'country', 'description', 'status']) &&
+        data.keys().hasOnly([
+          'fullName', 'email', 'country', 'description', 'status',
+          'company', 'serviceId', 'serviceTitle', 'projectTitle',
+          'budgetRange', 'expectedDeadline', 'referenceUrl',
+          'createdAt', 'updatedAt', 'serverTimestamp',
+          'internalNotes', 'followUpAt'
+        ]) &&
+        validStringLength('fullName', 1, 100) &&
+        data.email is string &&
+        data.email.size() <= 150 &&
+        isValidEmail(data.email) &&
+        validStringLength('country', 1, 100) &&
+        validStringLength('description', 1, 5000) &&
+        isValidEnquiryStatus(data.status) &&
+        isValidOptionalString('company', 0, 150) &&
+        isValidOptionalString('serviceId', 0, 100) &&
+        isValidOptionalString('serviceTitle', 0, 150) &&
+        isValidOptionalString('projectTitle', 0, 200) &&
+        isValidOptionalString('budgetRange', 0, 100) &&
+        isValidOptionalString('expectedDeadline', 0, 100) &&
+        isValidOptionalString('referenceUrl', 0, 500) &&
+        isValidOptionalString('internalNotes', 0, 5000) &&
+        isValidOptionalString('followUpAt', 0, 100) &&
+        isValidTimestampOrString('createdAt') &&
+        isValidTimestampOrString('updatedAt') &&
+        isValidServerTimestamp('serverTimestamp')
+      );
+    }
+
+    // Project schema validator
+    function isValidProject(data) {
+      return (
+        data.keys().hasAll(['slug', 'title', 'category']) &&
+        data.keys().hasOnly([
+          'id', 'slug', 'title', 'category', 'projectStatus',
+          'shortDescription', 'overview', 'problem', 'solution',
+          'features', 'technologyStack', 'thumbnailUrl', 'galleryImages',
+          'clientName', 'completionDate', 'isFeatured', 'qaMetrics',
+          'deploymentDetails', 'createdAt', 'updatedAt'
+        ]) &&
+        validStringLength('slug', 1, 100) &&
+        validStringLength('title', 1, 200) &&
+        validStringLength('category', 1, 100) &&
+        isValidOptionalString('id', 0, 100) &&
+        isValidOptionalString('projectStatus', 0, 100) &&
+        isValidOptionalString('shortDescription', 0, 2000) &&
+        isValidOptionalString('overview', 0, 10000) &&
+        isValidOptionalString('problem', 0, 10000) &&
+        isValidOptionalString('solution', 0, 10000) &&
+        isValidOptionalString('thumbnailUrl', 0, 2000) &&
+        isValidOptionalString('clientName', 0, 200) &&
+        isValidOptionalString('completionDate', 0, 100) &&
+        (!('isFeatured' in data) || data.isFeatured is bool) &&
+        (!('features' in data) || isValidList(data.features, 50)) &&
+        (!('technologyStack' in data) || isValidList(data.technologyStack, 50)) &&
+        (!('galleryImages' in data) || isValidList(data.galleryImages, 50)) &&
+        (!('qaMetrics' in data) || data.qaMetrics is map) &&
+        (!('deploymentDetails' in data) || data.deploymentDetails is map) &&
+        isValidTimestampOrString('createdAt') &&
+        isValidTimestampOrString('updatedAt')
+      );
+    }
+
+    // Site settings schema validator
+    function isValidSettings(data) {
+      return (
+        data.keys().hasOnly([
+          'companyEmail', 'whatsappContact', 'phoneNumber', 'address',
+          'githubUrl', 'linkedinUrl', 'twitterUrl', 'instagramUrl',
+          'tagline', 'brandDescriptor', 'updatedAt'
+        ]) &&
+        isValidOptionalString('companyEmail', 0, 150) &&
+        isValidOptionalString('whatsappContact', 0, 50) &&
+        isValidOptionalString('phoneNumber', 0, 50) &&
+        isValidOptionalString('address', 0, 300) &&
+        isValidOptionalString('githubUrl', 0, 500) &&
+        isValidOptionalString('linkedinUrl', 0, 500) &&
+        isValidOptionalString('twitterUrl', 0, 500) &&
+        isValidOptionalString('instagramUrl', 0, 500) &&
+        isValidOptionalString('tagline', 0, 500) &&
+        isValidOptionalString('brandDescriptor', 0, 500) &&
+        isValidTimestampOrString('updatedAt')
+      );
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // 1. Enquiries collection
+    // - Public clients can submit an enquiry with required fields and status == 'New'
+    // - Public clients cannot read, update, or delete enquiries (PII protection)
+    // - Authenticated admins have full read, update, and delete access
+    match /enquiries/{enquiryId} {
+      allow read: if isAdmin();
+      allow create: if isValidEnquiryCreate(request.resource.data) ||
+                       (isAdmin() && isValidEnquiryUpdate(request.resource.data));
+      allow update: if isAdmin() && isValidEnquiryUpdate(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // 2. Projects collection
+    // - Public read for website visitors and portfolio showcase
+    // - Authenticated admin write (create, update, delete)
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidProject(request.resource.data);
+      allow update: if isAdmin() && isValidProject(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // 3. Settings collection
+    // - Public read for website footer, header, and metadata configuration
+    // - Authenticated admin write (create, update, delete)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidSettings(request.resource.data);
+      allow update: if isAdmin() && isValidSettings(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // 4. Default Deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
