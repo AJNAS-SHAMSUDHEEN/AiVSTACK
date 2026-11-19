@@ -4,7 +4,7 @@ import { Hero } from "@/components/home/Hero";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
-import { InsightsSection } from "@/components/home/InsightsSection";
+import { ProcessSection } from "@/components/home/ProcessSection";
 import { FaqSection } from "@/components/home/FaqSection";
 import { TechLogos } from "@/components/home/TechLogos";
 import { ContactSection } from "@/components/home/ContactSection";
@@ -18,7 +18,7 @@ export default function HomePage() {
         <ServicesSection />
         <WhyChooseUs />
         <FeaturedProjects />
-        <InsightsSection />
+        <ProcessSection />
         <FaqSection />
         <TechLogos />
         <ContactSection />
