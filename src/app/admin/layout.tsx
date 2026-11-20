@@ -14,7 +14,10 @@ import {
   Menu,
   X,
   Shield,
+  UserCheck,
 } from "lucide-react";
+import { auth } from "@/lib/firebase/config";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const NAV_ITEMS = [
   { name: "Dashboard Overview", href: "/admin", icon: LayoutDashboard },
@@ -27,6 +30,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [adminEmail, setAdminEmail] = useState<string>("");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // Skip auth check on login page
@@ -35,6 +39,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (isLoginPage) return;
 
+    // Track Firebase Auth user
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user?.email) {
+        setAdminEmail(user.email);
+      }
+    });
+
+    // Check server session cookie
     fetch("/api/admin/auth")
       .then((res) => res.json())
       .then((data) => {
@@ -42,12 +54,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           router.push("/admin/login");
         } else {
           setAuthenticated(true);
+          if (data.email) {
+            setAdminEmail((prev) => prev || data.email);
+          }
         }
       })
       .catch(() => router.push("/admin/login"));
+
+    return () => unsubscribe();
   }, [pathname, isLoginPage, router]);
 
   const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.warn("Sign out notice:", err);
+    }
     await fetch("/api/admin/auth", { method: "DELETE" });
     router.push("/admin/login");
     router.refresh();
@@ -74,10 +96,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className="hidden lg:flex w-64 flex-col border-r border-[#A78BFA]/20 bg-white">
         <div className="p-6 border-b border-gray-100">
           <Logo variant="horizontal" size="sm" />
-          <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-bold text-[#7C3AED] bg-[#F2EEFF] px-2.5 py-0.5 rounded-md w-fit">
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] font-bold text-[#7C3AED] bg-[#F2EEFF] px-2.5 py-1 rounded-lg w-fit">
             <Shield className="h-3 w-3" />
-            <span>Admin Console v1.0</span>
+            <span>Admin Console</span>
           </div>
+          {adminEmail && (
+            <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#706B7D]" title={adminEmail}>
+              <UserCheck className="h-3 w-3 text-emerald-600 shrink-0" />
+              <span className="truncate">{adminEmail}</span>
+            </div>
+          )}
         </div>
 
         <nav className="flex-1 p-4 space-y-1.5">
@@ -128,12 +156,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Mobile Header Bar */}
         <header className="lg:hidden flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
           <Logo variant="horizontal" size="sm" />
-          <button
-            onClick={() => setMobileNavOpen(!mobileNavOpen)}
-            className="p-2 rounded-lg text-gray-700 hover:bg-gray-100"
-          >
-            {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="flex items-center gap-2">
+            {adminEmail && (
+              <span className="text-[11px] text-[#706B7D] max-w-[120px] truncate">{adminEmail}</span>
+            )}
+            <button
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              className="p-2 rounded-lg text-gray-700 hover:bg-gray-100"
+            >
+              {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </header>
 
         {mobileNavOpen && (

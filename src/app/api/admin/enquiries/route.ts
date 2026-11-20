@@ -18,9 +18,7 @@ export async function GET(req: NextRequest) {
   try {
     // Attempt to load live Firestore enquiries first
     const firestoreEnquiries = await getFirestoreEnquiries();
-    if (firestoreEnquiries.length > 0) {
-      return NextResponse.json({ enquiries: firestoreEnquiries, source: "firestore" });
-    }
+    return NextResponse.json({ enquiries: firestoreEnquiries, source: "firestore" });
   } catch (err) {
     console.warn("Firestore fetch warning, falling back to local db:", err);
   }
