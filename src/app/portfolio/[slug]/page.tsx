@@ -28,14 +28,18 @@ interface CaseStudyProps {
 }
 
 export async function generateStaticParams() {
-  return INITIAL_PROJECTS.map((project) => ({
+  const slugs = INITIAL_PROJECTS.map((project) => ({
     slug: project.slug,
   }));
+  slugs.push({ slug: "fundraising-website" });
+  return slugs;
 }
 
 export async function generateMetadata({ params }: CaseStudyProps) {
   const { slug } = await params;
-  const project = INITIAL_PROJECTS.find((p) => p.slug === slug);
+  const project = INITIAL_PROJECTS.find(
+    (p) => p.slug === slug || (slug === "fundraising-website" && p.slug === "community-fund-portal")
+  );
   if (!project) return { title: "Project Not Found" };
 
   return {
@@ -46,7 +50,9 @@ export async function generateMetadata({ params }: CaseStudyProps) {
 
 export default async function CaseStudyPage({ params }: CaseStudyProps) {
   const { slug } = await params;
-  const project = INITIAL_PROJECTS.find((p) => p.slug === slug);
+  const project = INITIAL_PROJECTS.find(
+    (p) => p.slug === slug || (slug === "fundraising-website" && p.slug === "community-fund-portal")
+  );
 
   if (!project) {
     notFound();
@@ -255,29 +261,48 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                      {project.galleryImages.map((img, idx) => (
+                    {(() => {
+                      const isMobileApp = project.category.toLowerCase().includes("mobile");
+                      return (
                         <div
-                          key={idx}
-                          className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-900 shadow-sm hover:shadow-xl hover:border-[#00A859] transition-all duration-300"
+                          className={`grid gap-6 ${
+                            isMobileApp
+                              ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+                              : "grid-cols-1 md:grid-cols-2"
+                          }`}
                         >
-                          <div className="aspect-[9/19.5] relative w-full overflow-hidden">
-                            <Image
-                              src={img}
-                              alt={`${project.title} screenshot ${idx + 1}`}
-                              fill
-                              className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                            />
-                          </div>
-                          <div className="p-2 text-center bg-white border-t border-gray-100">
-                            <span className="text-[11px] font-mono font-bold text-gray-500 group-hover:text-[#00A859] transition-colors">
-                              Screen #{idx + 1}
-                            </span>
-                          </div>
+                          {project.galleryImages.map((img, idx) => (
+                            <div
+                              key={idx}
+                              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-900 shadow-sm hover:shadow-xl hover:border-[#00A859] transition-all duration-300"
+                            >
+                              <div
+                                className={`${
+                                  isMobileApp ? "aspect-[9/19.5]" : "aspect-[16/10]"
+                                } relative w-full overflow-hidden bg-gray-50`}
+                              >
+                                <Image
+                                  src={img}
+                                  alt={`${project.title} screenshot ${idx + 1}`}
+                                  fill
+                                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                />
+                              </div>
+                              <div className="p-3 text-center bg-white border-t border-gray-100">
+                                <span className="text-xs font-mono font-bold text-gray-500 group-hover:text-[#00A859] transition-colors">
+                                  {idx === 0 && !isMobileApp
+                                    ? "Administrative Dashboard"
+                                    : idx === 1 && !isMobileApp
+                                    ? "Finance & Treasury Custody"
+                                    : `Screen #${idx + 1}`}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })()}
                   </div>
                 )}
               </div>
@@ -316,7 +341,11 @@ export default async function CaseStudyPage({ params }: CaseStudyProps) {
                       </div>
                       <div className="flex justify-between py-1">
                         <span className="text-gray-500">SDK Toolchain:</span>
-                        <span className="font-bold text-gray-900">{project.qaMetrics.flutterVersion}</span>
+                        <span className="font-bold text-gray-900">
+                          {project.qaMetrics.flutterVersion ||
+                            project.qaMetrics.frameworkVersion ||
+                            "Production Stack"}
+                        </span>
                       </div>
                     </div>
                   </div>

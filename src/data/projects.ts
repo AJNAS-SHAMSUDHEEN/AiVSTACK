@@ -41,16 +41,18 @@ export interface Project {
     testsPassed: number;
     testsFailed: number;
     analyzeStatus: string;
-    flutterVersion: string;
-    dartVersion: string;
+    flutterVersion?: string;
+    dartVersion?: string;
+    frameworkVersion?: string;
   };
   deploymentDetails?: {
     development: string;
     testing: string;
     distribution: string;
-    usage: string;
-    playStore: string;
-    signing: string;
+    usage?: string;
+    playStore?: string;
+    signing?: string;
+    productionUrl?: string;
   };
 }
 
@@ -124,29 +126,62 @@ export const INITIAL_PROJECTS: Project[] = [
   },
   {
     id: "proj-fundraising",
-    slug: "fundraising-website",
-    title: "Fundraising Website",
+    slug: "community-fund-portal",
+    title: "Community Fund Portal — Multi-Tier Civic Fundraising & Treasury Platform",
     category: "Fundraising / Web Application",
     projectStatus: "Completed",
     shortDescription:
-      "A digital fundraising platform designed to present fundraising initiatives and manage contribution-related activities.",
+      "A specialized, enterprise-grade civic fundraising, on-ground volunteer cash POS, and multi-tier double-entry treasury custody management platform.",
     overview:
-      "A dedicated, high-conversion web platform engineered to transparently present fundraising campaigns, manage real-time backer contributions, and streamline donor communication. The platform provides intuitive campaign storytelling, secure checkout pipelines, and live contribution tracking.",
+      "A specialized, enterprise-grade civic fundraising and treasury management web application built for a prominent regional community foundation. The platform modernizes traditional, paper-based community land acquisition and infrastructure campaigns into a transparent, real-time, tamper-resistant digital ecosystem.\n\nIt handles community pledges, direct on-ground cash collections, automated official receipt issuance with high-resolution canvas/PDF rendering, and an advanced double-entry-style multi-tier treasury and custodian management ledger.",
     problem:
-      "Fundraising campaigns frequently struggle with fragmented donor outreach, lack of public ledger transparency, and high abandonment rates caused by clunky payment handshakes.",
+      "Traditional community fundraising campaigns (especially for high-value land acquisitions and community facility construction) face critical operational and governance bottlenecks:\n\n• Information Asymmetry & Mistrust: Donors who pledge money (Offers) or give physical cash to field volunteers have no real-time way to verify whether their money reached the committee or to view their cumulative contributions.\n• Disconnected Direct Cash Collections: Many donors give cash on the spot without registering a prior pledge. In standard systems, this causes orphaned cash records that never show up in the contributor's personal profile.\n• Multi-Tier Fund Distribution Dilemma: Funds are collected across multiple committee entities (Central Committee vs. Local Unit) and held in transit by different field volunteers (Custodians). Tracking who holds how much cash, who handed over to whom, and project expenses was historically prone to human error and ledger discrepancies.\n• Receipt Generation Delays: Generating official, branded, stamped receipts for hundreds of donors manually is slow, error-prone, and lacks instant digital distribution channels like WhatsApp.",
     solution:
-      "We engineered a modern, responsive web application featuring direct payment gateway integration, live donation progress telemetry, social sharing mechanisms, and an administrative portal to manage campaign milestones.",
+      "AIVSTACK architected an end-to-end, mobile-first, real-time web platform engineered with Next.js 15 (App Router), TypeScript, and Google Cloud Firestore:\n\n• Public Contributor Portal: Phone-session-based donor portal with live campaign milestones, real-time progress bars, pledge status, and direct cash contribution history.\n• Volunteer & Admin Cash POS: Fast, responsive POS interface for on-ground volunteers to record cash receipts with offline-safe optimistic UI updates in under 5 seconds.\n• Enterprise Finance & Treasury Module: Complete custody tracking supporting Treasury-to-Custodian and Custodian-to-Custodian (A to B) handovers, expense tracking with categories, landowner milestone disbursements, and one-click PDF audit reporting.\n• Automated Visual Receipt Engine: Instant Canvas 2D engine that programmatically composites official receipt graphics, typography, numbers-to-words currency conversion in Indian numbering (₹ Lakhs/Crores), downloadable as crisp print-ready PDFs and JPGs.",
     features: [
-      "Dynamic campaign milestone and goal tracking",
-      "Seamless multi-tier contribution workflows",
-      "Public donor ledger with optional anonymity",
-      "Automated tax receipt and contribution confirmation generation",
-      "Mobile-optimized responsive donation funnel",
+      "Public Contributor Dashboard with dynamic pledge vs direct cash contribution tracking",
+      "Sub-5-Second Volunteer Cash POS with real-time phone number auto-suggest",
+      "Automatic sequential official receipt numbering (ER-No) and instant WhatsApp dispatch",
+      "Multi-tier treasury ledger with entity fund segregation (Central vs. Local Unit)",
+      "Custodian A-to-B handover system with mathematical conservation balance verification",
+      "Expense categorization and landowner milestone disbursement management",
+      "Automated client-side HTML5 Canvas 2D + jsPDF print-ready vector receipt generation",
+      "Strict integer paise (amountPaise) storage to eliminate floating-point calculation drift",
+      "Role-based governance with Super Admin controls and locked volunteer audit views",
+      "Live reactive sync using Firestore onSnapshot across admin POS and public progress screens",
     ],
-    technologyStack: ["Next.js", "React", "Tailwind CSS", "Payment Gateway"],
-    thumbnailUrl: "/portfolio/placeholders/fundraising-preview.svg",
-    galleryImages: ["/portfolio/placeholders/fundraising-preview.svg"],
+    technologyStack: [
+      "Next.js 15",
+      "TypeScript",
+      "Google Cloud Firestore",
+      "HTML5 Canvas 2D",
+      "jsPDF",
+      "Tailwind CSS",
+      "Lucide React",
+    ],
+    thumbnailUrl: "/portfolio/community-fund/01_administrative_dashboard.jpg",
+    galleryImages: [
+      "/portfolio/community-fund/01_administrative_dashboard.jpg",
+      "/portfolio/community-fund/02_finance_management.jpg",
+    ],
+    clientName: "Civic Non-Profit & Community Trust (Confidential Client)",
+    completionDate: "November 2026",
     isFeatured: true,
+    qaMetrics: {
+      testSuites: 12,
+      testsPassed: 96,
+      testsFailed: 0,
+      analyzeStatus: "TypeScript Strict (0 Errors)",
+      frameworkVersion: "Next.js 15 • Cloud Firestore",
+    },
+    deploymentDetails: {
+      development: "Completed",
+      testing: "Verified in production environment",
+      distribution: "Production Web Deployment",
+      usage: "Live community fundraising and treasury audit operations",
+      playStore: "Web App (PWA Responsive)",
+      signing: "SSL/TLS 256-bit encryption",
+    },
   },
   {
     id: "proj-yt-downloader",

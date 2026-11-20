@@ -2,6 +2,46 @@
   "enquiries": [],
   "projects": [
     {
+      "id": "proj-fundraising",
+      "slug": "community-fund-portal",
+      "title": "Community Fund Portal — Multi-Tier Civic Fundraising & Treasury Platform",
+      "category": "Fundraising / Web Application",
+      "projectStatus": "Completed",
+      "shortDescription": "A specialized, enterprise-grade civic fundraising, on-ground volunteer cash POS, and multi-tier double-entry treasury custody management platform.",
+      "overview": "A specialized, enterprise-grade civic fundraising and treasury management web application built for a prominent regional community foundation. The platform modernizes traditional, paper-based community land acquisition and infrastructure campaigns into a transparent, real-time, tamper-resistant digital ecosystem. It handles community pledges, direct on-ground cash collections, automated official receipt issuance with high-resolution canvas/PDF rendering, and an advanced double-entry-style multi-tier treasury and custodian management ledger.",
+      "problem": "Traditional community fundraising campaigns (especially for high-value land acquisitions and community facility construction) face critical operational and governance bottlenecks: Information asymmetry, disconnected direct cash collections, multi-tier fund distribution dilemmas across central and unit treasuries, and manual paper receipt delays.",
+      "solution": "AIVSTACK architected an end-to-end, mobile-first, real-time web platform engineered with Next.js 15 (App Router), TypeScript, and Google Cloud Firestore featuring public contributor status dashboards, sub-5-second volunteer cash POS, double-entry custodian handover tracking, and an automated Canvas 2D vector PDF receipt engine.",
+      "features": [
+        "Public Contributor Dashboard with dynamic pledge vs direct cash contribution tracking",
+        "Sub-5-Second Volunteer Cash POS with real-time phone number auto-suggest",
+        "Automatic sequential official receipt numbering (ER-No) and instant WhatsApp dispatch",
+        "Multi-tier treasury ledger with entity fund segregation (Central vs. Local Unit)",
+        "Custodian A-to-B handover system with mathematical conservation balance verification",
+        "Expense categorization and landowner milestone disbursement management",
+        "Automated client-side HTML5 Canvas 2D + jsPDF print-ready vector receipt generation",
+        "Strict integer paise (amountPaise) storage to eliminate floating-point calculation drift",
+        "Role-based governance with Super Admin controls and locked volunteer audit views",
+        "Live reactive sync using Firestore onSnapshot across admin POS and public progress screens"
+      ],
+      "technologyStack": [
+        "Next.js 15",
+        "TypeScript",
+        "Google Cloud Firestore",
+        "HTML5 Canvas 2D",
+        "jsPDF",
+        "Tailwind CSS",
+        "Lucide React"
+      ],
+      "thumbnailUrl": "/portfolio/community-fund/01_administrative_dashboard.jpg",
+      "galleryImages": [
+        "/portfolio/community-fund/01_administrative_dashboard.jpg",
+        "/portfolio/community-fund/02_finance_management.jpg"
+      ],
+      "clientName": "Civic Non-Profit & Community Trust (Confidential Client)",
+      "completionDate": "November 2026",
+      "isFeatured": true
+    },
+    {
       "id": "proj-1",
       "slug": "apex-erp-operations-platform",
       "title": "ApexERP — Enterprise Operations System",

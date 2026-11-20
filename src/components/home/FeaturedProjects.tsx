@@ -32,15 +32,15 @@ const PROJECTS = [
   {
     number: "02",
     total: "05",
-    name: "Fundraising Website",
-    category: "Fundraising / Web Application",
-    shortCategory: "FUNDRAISING",
+    name: "Community Fund Portal",
+    category: "Fundraising & Treasury Management",
+    shortCategory: "CIVIC FINTECH",
     description:
-      "A digital fundraising platform designed to present fundraising initiatives and manage contribution-related activities.",
+      "A specialized, enterprise-grade civic fundraising, on-ground volunteer cash POS, and multi-tier double-entry treasury custody management platform.",
     status: "Completed",
-    technologies: ["Next.js", "React", "Tailwind CSS", "Payment Gateway"],
-    slug: "fundraising-website",
-    image: "/portfolio/placeholders/fundraising-preview.svg",
+    technologies: ["Next.js 15", "TypeScript", "Cloud Firestore", "HTML5 Canvas"],
+    slug: "community-fund-portal",
+    image: "/portfolio/community-fund/01_administrative_dashboard.jpg",
     accent: "#059669",
   },
   {
