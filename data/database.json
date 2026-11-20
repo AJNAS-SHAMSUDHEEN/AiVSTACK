@@ -42,6 +42,47 @@
       "isFeatured": true
     },
     {
+      "id": "proj-yt-downloader",
+      "slug": "youtube-downloader",
+      "title": "High-Performance YouTube Media Processing Platform & PWA",
+      "category": "Web Utility Application",
+      "projectStatus": "Completed",
+      "shortDescription": "An asynchronous media extraction platform and PWA pairing React 19 with a non-blocking FastAPI backend, tiered FFmpeg remuxing, and headless cipher runtimes.",
+      "overview": "YouTube Downloader (v2.0) is an open-source, full-stack media extraction platform engineered for high reliability, zero-cloud-cost hosting, and seamless cross-platform user experience. The application pairs a React 19 + Vite Progressive Web App (PWA) with a FastAPI + FFmpeg + Python 3.12 asynchronous media processing backend. Unlike naive scrapers or ad-riddled web converters, this platform solves core distributed systems and media processing problems: preventing asynchronous event loop starvation during intensive I/O, implementing a tiered lossless FFmpeg remuxing pipeline, executing real-time download telemetry without heavy message brokers, defeating strict client-side bot/cipher challenges via headless JS runtimes, and enforcing strict ephemeral lifecycle cleanup under constrained hardware environments (512MB RAM).",
+      "problem": "Building a scalable, production-grade video downloader presents unique challenges that break typical web applications: asynchronous event loop starvation caused by blocking yt-dlp and FFmpeg CLI operations, 512MB RAM limits on budget container tiers, YouTube's evolving obfuscated n-sig cipher challenges, temporary disk leaks, and lack of real-time download progress feedback.",
+      "solution": "AIVSTACK architected an enterprise-grade async processing pipeline uniting React 19, FastAPI, Docker, and multi-runtime execution: offloading synchronous downloads to thread pools via run_in_executor with asyncio semaphore guards, implementing a 3-tier escalating lossless remuxing ladder, custom in-memory telemetry hooks polled at 300ms intervals, headless Node.js & Deno binary cipher runtimes, and dual-layer zero-leak ephemeral storage cleanup.",
+      "features": [
+        "React 19 + Vite Progressive Web App (PWA) with Workbox offline caching and standalone installability",
+        "Non-blocking FastAPI backend offloading CPU-intensive tasks via run_in_executor",
+        "Concurrency bounded by asyncio.Semaphore to guarantee stable execution within 512MB RAM",
+        "Tiered FFmpeg remuxing ladder (Level 1 Stream Copy in ~1s vs Level 3 libx264 fallback)",
+        "Live download telemetry (0% to 100%) with instantaneous throughput (MiB/s) and ETA timers",
+        "Instant YouTube oEmbed metadata inspection (video thumbnail, title, author) on URL paste",
+        "Headless Node.js & Deno binary runtime containerization to solve dynamic n-sig cipher challenges",
+        "Dual-layer ephemeral storage cleanup (FileResponse hook + 10-minute automated janitor daemon)",
+        "RFC 5987 compliant UTF-8 filename delivery preserving international characters and emojis",
+        "Strict security hardening: SSRF domain whitelist, regex path sanitization, and 500MB size limits"
+      ],
+      "technologyStack": [
+        "React 19",
+        "Vite 8",
+        "FastAPI",
+        "Python 3.12",
+        "yt-dlp",
+        "FFmpeg & FFprobe",
+        "Docker",
+        "Deno & Node.js",
+        "Workbox PWA"
+      ],
+      "thumbnailUrl": "/portfolio/youtube-downloader/01_pwa_interface.png",
+      "galleryImages": [
+        "/portfolio/youtube-downloader/01_pwa_interface.png"
+      ],
+      "clientName": "Open-Source Production Utility & Direct Users",
+      "completionDate": "October 2026",
+      "isFeatured": true
+    },
+    {
       "id": "proj-1",
       "slug": "apex-erp-operations-platform",
       "title": "ApexERP — Enterprise Operations System",

@@ -46,15 +46,15 @@ const PROJECTS = [
   {
     number: "03",
     total: "05",
-    name: "YouTube Downloader",
-    category: "Web Utility Application",
-    shortCategory: "UTILITY",
+    name: "YouTube Media Platform & PWA",
+    category: "Media Processing & Distributed Async Systems",
+    shortCategory: "ASYNC SYSTEMS & PWA",
     description:
-      "A web-based utility application developed to provide YouTube video downloading functionality.",
-    status: "Completed – Not Publicly Deployed",
-    technologies: ["React", "Vite", "FastAPI", "Python", "yt-dlp", "FFmpeg"],
+      "An asynchronous media extraction platform and PWA pairing React 19 with a non-blocking FastAPI backend, tiered FFmpeg remuxing, and headless cipher runtimes.",
+    status: "Completed",
+    technologies: ["React 19", "FastAPI", "Python 3.12", "FFmpeg", "Docker"],
     slug: "youtube-downloader",
-    image: "/portfolio/placeholders/youtube-downloader-preview.svg",
+    image: "/portfolio/youtube-downloader/01_pwa_interface.png",
     accent: "#DC2626",
   },
   {
