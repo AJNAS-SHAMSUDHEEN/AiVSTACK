@@ -94,11 +94,12 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 md:pt-14 md:pb-24 bg-white border-b border-gray-100">
+    <section className="relative overflow-hidden pt-6 pb-12 md:pt-10 md:pb-16 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-          {/* Left Column: Heading, Subtitle & 4-Metric Grid */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-8">
+        {/* Top Row: Left Headline + CTA & Right 3D Robot - Perfectly Vertically Centered */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left Column: Kicker, Heading & CTAs */}
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
             {/* Kicker / Subtitle Tag */}
             <div className="inline-flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#00A859]">
@@ -114,56 +115,50 @@ export function Hero() {
               AGENCY
             </h1>
 
-            {/* Narrative Subtitle */}
-            <p className="text-base sm:text-lg text-gray-600 max-w-xl leading-relaxed">
-              AIVSTACK engineers next-generation software, scalable web platforms, Flutter mobile apps,
-              and conversational AI systems designed to turn ambitious ideas into high-performing digital realities.
-            </p>
-
             {/* CTA Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-1">
               <Link
                 href="/start-a-project"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#00A859] hover:bg-[#008f4c] px-8 py-4 text-xs sm:text-sm font-bold text-white uppercase tracking-wider shadow-md hover:shadow-lg hover:scale-102 active:scale-98 transition-all duration-300"
+                className="inline-flex items-center gap-2.5 rounded-full bg-[#00A859] hover:bg-[#008f4c] px-8 py-3.5 text-xs sm:text-sm font-bold text-white uppercase tracking-wider shadow-md hover:shadow-lg hover:scale-102 active:scale-98 transition-all duration-300"
               >
                 <span>Get a Quote</span>
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 px-8 py-4 text-xs sm:text-sm font-bold text-gray-800 transition-all duration-300"
+                className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 px-8 py-3.5 text-xs sm:text-sm font-bold text-gray-800 transition-all duration-300"
               >
                 <span>Explore Services</span>
               </Link>
             </div>
-
-            {/* 4-Metric Grid (2x2) with Circular Mint Badges */}
-            <div className="pt-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-2 gap-5 sm:gap-7 max-w-lg">
-              {METRICS.map((metric, idx) => {
-                const Icon = metric.icon;
-                return (
-                  <div key={idx} className="flex items-center gap-3.5 group">
-                    <div className="h-12 w-12 shrink-0 rounded-full bg-[#E6F7EF] text-[#00A859] flex items-center justify-center border border-[#00A859]/20 transition-transform duration-300 group-hover:scale-110">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="font-heading text-xl sm:text-2xl font-black text-gray-950 leading-none">
-                        {metric.number}
-                      </div>
-                      <div className="text-xs text-gray-500 font-medium mt-1 leading-tight">
-                        {metric.label}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
 
-          {/* Right Column: Hero Visual Frame with 3D Animated Element */}
-          <div className="lg:col-span-5">
+          {/* Right Column: 3D Robot Visual (Vertically Centered Beside Headline) */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <HeroVisual />
           </div>
+        </div>
+
+        {/* Bottom Metric Row: 4 Pillars of Excellence */}
+        <div className="mt-10 pt-8 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {METRICS.map((metric, idx) => {
+            const Icon = metric.icon;
+            return (
+              <div key={idx} className="flex items-center gap-3.5 group">
+                <div className="h-12 w-12 shrink-0 rounded-full bg-[#E6F7EF] text-[#00A859] flex items-center justify-center border border-[#00A859]/20 transition-transform duration-300 group-hover:scale-110">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="font-heading text-xl sm:text-2xl font-black text-gray-950 leading-none">
+                    {metric.number}
+                  </div>
+                  <div className="text-xs text-gray-500 font-medium mt-1.5 leading-tight">
+                    {metric.label}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

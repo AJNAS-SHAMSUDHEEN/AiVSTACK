@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CursorGlow } from "@/components/ui/CursorGlow";
 import { LiquidBackground } from "@/components/ui/LiquidBackground";
+import { FloatingRobotCompanion } from "@/components/layout/FloatingRobotCompanion";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -59,6 +60,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-[#FAFAFF] text-[#24202D] relative selection:bg-[#A78BFA]/30 selection:text-[#30224D]">
         <LiquidBackground />
         <CursorGlow />
+        <FloatingRobotCompanion />
         <div className="relative z-10 flex min-h-full flex-col">
           {children}
         </div>
