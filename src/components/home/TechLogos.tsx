@@ -1,44 +1,59 @@
 "use client";
 
+import { BlueprintSection } from "@/components/layout/BlueprintSection";
+
 export function TechLogos() {
-  const TECHS = [
-    { name: "Next.js 16", tag: "App Router" },
-    { name: "TypeScript", tag: "Strict Types" },
-    { name: "Flutter", tag: "Native Engine" },
-    { name: "Dart", tag: "SDK 3.13" },
-    { name: "Python", tag: "FastAPI / AI" },
-    { name: "PostgreSQL", tag: "ACID Relational" },
-    { name: "SQLite", tag: "Embedded DB" },
-    { name: "Tailwind CSS", tag: "Design Tokens" },
-    { name: "Framer Motion", tag: "Fluid Physics" },
-    { name: "Docker", tag: "Containers" },
+  const STACK_MANIFEST = [
+    { name: "Next.js 16", tag: "App Router / SSR", category: "WEB" },
+    { name: "TypeScript 5.8", tag: "Strict Types", category: "LANG" },
+    { name: "Flutter 3.47", tag: "Native Engine", category: "MOBILE" },
+    { name: "Dart 3.13", tag: "Native JIT/AOT", category: "LANG" },
+    { name: "Python 3.12", tag: "FastAPI / Async", category: "BACKEND" },
+    { name: "Cloud Firestore", tag: "Reactive Listeners", category: "DB" },
+    { name: "PostgreSQL", tag: "ACID Relational", category: "DB" },
+    { name: "SQLite", tag: "On-Device ACID", category: "EMBEDDED" },
+    { name: "FFmpeg & FFprobe", tag: "Lossless Remux", category: "MEDIA" },
+    { name: "Docker", tag: "Multi-Runtime", category: "DEVOPS" },
+    { name: "HTML5 Canvas 2D", tag: "300 DPI Vector", category: "GRAPHICS" },
+    { name: "Tailwind CSS", tag: "Design Tokens", category: "UI" },
+    { name: "GSAP & ScrollTrigger", tag: "Choreography", category: "MOTION" },
   ];
 
   return (
-    <section className="py-12 bg-white border-b border-gray-100 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center mb-6">
-        <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-gray-400">
-          ENTERPRISE ARCHITECTURE & BATTLE-TESTED TECHNOLOGIES
-        </span>
-      </div>
-
-      <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <div className="animate-marquee-left flex items-center gap-12 sm:gap-16">
-          {[...TECHS, ...TECHS].map((tech, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-2.5 opacity-60 hover:opacity-100 transition-opacity cursor-default shrink-0"
-            >
-              <span className="font-heading font-black text-lg sm:text-xl text-gray-800 tracking-tight">
-                {tech.name}
-              </span>
-              <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 font-semibold">
-                {tech.tag}
-              </span>
+    <BlueprintSection
+      id="stack"
+      eyebrow="05 // TECHNOLOGY MANIFEST"
+      index="36s TICKER"
+      className="bg-[var(--bg)]"
+    >
+      {/* Ticker Container with Hairline Dividers */}
+      <div className="py-8 sm:py-10 overflow-hidden relative">
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="marquee">
+            <div className="marquee-track flex items-center gap-6 sm:gap-8">
+              {[...STACK_MANIFEST, ...STACK_MANIFEST, ...STACK_MANIFEST].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="inline-flex items-center gap-3 px-4 py-2 border border-[var(--line)] bg-[var(--bg-raised)] hover:border-[var(--line-strong)] hover:bg-[var(--bg-sunken)] transition-colors cursor-default shrink-0 group"
+                >
+                  <span className="hud-label text-[9px] text-[var(--accent-ink)] font-bold">
+                    {item.category}
+                  </span>
+                  <span
+                    className="font-bold text-sm sm:text-base text-[var(--ink-strong)]"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {item.name}
+                  </span>
+                  <span className="text-[10px] font-mono text-[var(--faint)]">
+                    // {item.tag}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
-    </section>
+    </BlueprintSection>
   );
 }

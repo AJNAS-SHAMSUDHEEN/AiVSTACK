@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { BlueprintSection } from "@/components/layout/BlueprintSection";
 
 const PROJECTS = [
   {
@@ -135,271 +136,267 @@ export function FeaturedProjects() {
     switch (status) {
       case "Completed":
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Completed</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-[var(--line-strong)] bg-[var(--bg-raised)] text-[var(--ink)] hud-label text-[10px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+            <span>Verified Commercial Delivery</span>
           </span>
         );
       case "Completed – Not Publicly Deployed":
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold border border-amber-200">
-            <Clock className="h-3.5 w-3.5 text-amber-600" />
-            <span>Completed – Not Publicly Deployed</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--muted)] hud-label text-[10px]">
+            <Clock className="h-3 w-3 text-[var(--faint)]" />
+            <span>Private Deployment</span>
           </span>
         );
       case "In Development":
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">
-            <Clock className="h-3.5 w-3.5 text-blue-600" />
-            <span>In Development</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--accent-ink)] hud-label text-[10px]">
+            <Clock className="h-3 w-3 text-[var(--accent)]" />
+            <span>Active Sprint Cycle</span>
           </span>
         );
     }
   };
 
   return (
-    <section
-      ref={containerRef}
-      className={`relative bg-[#FAFAFA] border-b border-gray-100 ${
-        isDesktop ? "min-h-[320vh]" : "py-20 sm:py-28"
-      }`}
+    <BlueprintSection
+      id="lineup"
+      eyebrow="04 // PRODUCTION LINEUP"
+      index="5 CASE STUDIES"
+      className="bg-[var(--bg)]"
     >
-      {/* Pinned Sticky Viewport on Desktop; Standard Container on Mobile */}
       <div
-        className={`${
-          isDesktop
-            ? "sticky top-0 h-screen flex flex-col justify-center overflow-hidden"
-            : "w-full"
+        ref={containerRef}
+        className={`relative ${
+          isDesktop ? "min-h-[300vh]" : "py-12 sm:py-16"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-          {/* Section Introduction (Matching Specific Requirements) */}
-          <div className="mb-8 lg:mb-10 text-left">
-            <div className="inline-flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#00A859]">
-                OUR WORK / SELECTED PROJECTS
-              </span>
-            </div>
-            <h2 className="mt-2 font-heading text-3xl sm:text-4xl md:text-5xl font-black text-gray-950 tracking-tight leading-[1.12]">
-              Ideas Into Digital Experiences.
-            </h2>
-            <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl leading-relaxed">
-              Explore a selection of digital products and creative solutions developed by AIVSTACK.
-            </p>
-          </div>
-
-          {/* Main Interactive Portfolio: Left Info • Center Visual Stack • Right Vertical Indicator */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            {/* LEFT / INFORMATION AREA (5 Columns) */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProject.slug}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="space-y-5"
+        {/* Pinned Sticky Viewport on Desktop */}
+        <div
+          className={`${
+            isDesktop
+              ? "sticky top-12 h-[calc(100vh-3rem)] flex flex-col justify-center overflow-hidden"
+              : "w-full"
+          }`}
+        >
+          <div className="w-full px-6 sm:px-10 py-6">
+            {/* Section Introduction */}
+            <div className="mb-6 lg:mb-8 text-left border-b border-[var(--line)] pb-6">
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--ink-strong)] tracking-[-0.03em] leading-tight"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Production works. <br />
+                <span
+                  className="font-serif italic font-normal"
+                  style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {/* Project Count & Category */}
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="font-mono text-sm font-bold text-gray-400">
-                      {activeProject.number} / {activeProject.total}
-                    </span>
-                    <span className="text-gray-300">•</span>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#00A859]">
-                      {activeProject.category}
-                    </span>
-                  </div>
-
-                  {/* Project Title */}
-                  <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-black text-gray-950 tracking-tight leading-tight">
-                    {activeProject.name}
-                  </h3>
-
-                  {/* Short Project Description */}
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                    {activeProject.description}
-                  </p>
-
-                  {/* Technology Tags */}
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {activeProject.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 rounded-md bg-white border border-gray-200 text-gray-700 text-xs font-semibold shadow-2xs"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Project Status */}
-                  <div className="pt-2">
-                    {getStatusBadge(activeProject.status)}
-                  </div>
-
-                  {/* View Case Study CTA Button */}
-                  <div className="pt-3 flex items-center gap-4">
-                    <Link
-                      href={`/portfolio/${activeProject.slug}`}
-                      className="inline-flex items-center gap-2 rounded-full bg-[#00A859] hover:bg-[#008f4c] text-white px-7 py-3.5 text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all duration-300 hover:scale-102 active:scale-98"
-                    >
-                      <span>View Case Study</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-
-                    {/* Interactive Prev/Next Step Buttons */}
-                    <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full p-1 shadow-2xs">
-                      <button
-                        onClick={() => handleManualSelect(Math.max(0, activeIdx - 1))}
-                        disabled={activeIdx === 0}
-                        className="h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-950 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
-                        aria-label="Previous Project"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleManualSelect(Math.min(PROJECTS.length - 1, activeIdx + 1))
-                        }
-                        disabled={activeIdx === PROJECTS.length - 1}
-                        className="h-8 w-8 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-950 hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
-                        aria-label="Next Project"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                  Shipped, tested &amp; verified.
+                </span>
+              </h2>
+              <p className="mt-2 text-xs sm:text-sm text-[var(--muted)] max-w-xl leading-relaxed font-normal">
+                Explore verified commercial software, mobile apps, and full-stack systems engineered by AIVSTACK.
+              </p>
             </div>
 
-            {/* CENTER / MAIN VISUAL AREA (6 Columns: Cascading Deck Layout Matching Reference) */}
-            <div className="lg:col-span-6 relative flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
-              <div className="relative w-full max-w-[420px] aspect-[4/5] mx-auto">
-                {PROJECTS.map((project, idx) => {
-                  const offset = idx - activeIdx;
-                  // Only render cards that are active or in the upcoming stack
-                  const isVisible = offset >= 0 && offset <= 3;
-                  if (!isVisible) return null;
-
-                  return (
-                    <motion.div
-                      key={project.slug}
-                      initial={false}
-                      animate={{
-                        y: -offset * 22,
-                        scale: 1 - offset * 0.05,
-                        zIndex: 30 - offset,
-                        opacity: offset === 0 ? 1 : 1 - offset * 0.22,
-                      }}
-                      transition={{ duration: 0.45, ease: "easeOut" }}
-                      className="absolute inset-0 rounded-[32px] overflow-hidden border border-gray-200/90 bg-white shadow-2xl shadow-gray-900/10 flex flex-col justify-between"
-                      style={{
-                        transformOrigin: "bottom center",
-                      }}
-                    >
-                      {/* Image Preview Container */}
-                      <div className="relative w-full h-full bg-[#0F172A]">
-                        <Image
-                          src={project.image}
-                          alt={project.name}
-                          fill
-                          className="object-cover object-top transition-transform duration-700"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-                          priority={idx === 0}
-                        />
-
-                        {/* Top Overlay Strip (Matching Reference 08/11 and Category Tag) */}
-                        <div className="absolute top-0 inset-x-0 p-5 flex items-center justify-between bg-gradient-to-b from-black/70 via-black/30 to-transparent text-white z-10 pointer-events-none">
-                          <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20">
-                            {project.number} / {project.total}
-                          </span>
-                          <span className="text-[11px] font-bold uppercase tracking-widest text-white/90">
-                            {project.shortCategory}
-                          </span>
-                        </div>
-
-                        {/* Bottom Editorial Content Overlay inside Card */}
-                        <div className="absolute bottom-0 inset-x-0 p-6 pt-12 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white z-10">
-                          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-400 font-bold block mb-1">
-                            PROJECT {project.number}
-                          </span>
-                          <h4 className="font-heading text-xl sm:text-2xl font-black text-white leading-tight">
-                            {project.name}
-                          </h4>
-                          <p className="text-xs text-white/70 line-clamp-1 mt-1 font-normal">
-                            {project.description}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* RIGHT / VERTICAL PROGRESS INDICATOR (1 Column - Matching Reference Screenshot) */}
-            <div className="hidden lg:flex lg:col-span-1 flex-col items-center justify-center pl-4">
-              {/* Bold Current Project Number Counter (Matching "08 / 11" in Screenshot) */}
-              <div className="flex items-baseline gap-0.5 font-heading text-center mb-6">
-                <span className="text-3xl font-black text-gray-950 leading-none">
-                  {activeProject.number}
-                </span>
-                <span className="text-xs font-bold text-gray-400">
-                  /{activeProject.total}
-                </span>
-              </div>
-
-              {/* Vertical Progress Track with Gliding Marker */}
-              <div className="relative h-64 w-[2px] bg-gray-200 rounded-full flex flex-col justify-between items-center my-2">
-                {/* Active Progress Fill */}
-                <motion.div
-                  className="absolute top-0 w-[2px] bg-[#00A859] rounded-full"
-                  animate={{
-                    height: `${(activeIdx / (PROJECTS.length - 1)) * 100}%`,
-                  }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                />
-
-                {/* Sliding Marker Orb */}
-                <motion.div
-                  className="absolute -left-[5px] h-3 w-3 rounded-full bg-[#00A859] shadow-md shadow-emerald-500/50 border-2 border-white cursor-pointer z-10"
-                  animate={{
-                    top: `calc(${(activeIdx / (PROJECTS.length - 1)) * 100}% - 6px)`,
-                  }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                />
-
-                {/* 5 Project Click Nodes */}
-                {PROJECTS.map((p, idx) => (
-                  <button
-                    key={p.slug}
-                    onClick={() => handleManualSelect(idx)}
-                    className="relative z-20 h-4 w-4 -left-[7px] flex items-center justify-center cursor-pointer group"
-                    aria-label={`Jump to project ${idx + 1}`}
+            {/* Main Interactive Portfolio Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+              {/* LEFT / INFORMATION AREA */}
+              <div className="lg:col-span-5 flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeProject.slug}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="space-y-4"
                   >
-                    <span
-                      className={`h-2 w-2 rounded-full transition-all duration-200 ${
-                        idx === activeIdx
-                          ? "bg-[#00A859] scale-125"
-                          : "bg-gray-300 group-hover:bg-gray-500"
-                      }`}
-                    />
-                  </button>
-                ))}
+                    {/* Project Count & Category */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="hud-label text-xs font-bold text-[var(--accent-ink)]">
+                        {activeProject.number} / {activeProject.total}
+                      </span>
+                      <span className="text-[var(--line-strong)]">•</span>
+                      <span className="hud-label text-[10px] text-[var(--faint)]">
+                        {activeProject.category}
+                      </span>
+                    </div>
+
+                    {/* Project Title */}
+                    <h3
+                      className="text-2xl sm:text-3xl font-bold text-[var(--ink-strong)] tracking-tight leading-tight"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {activeProject.name}
+                    </h3>
+
+                    {/* Short Project Description */}
+                    <p className="text-xs sm:text-sm text-[var(--muted)] leading-relaxed font-normal">
+                      {activeProject.description}
+                    </p>
+
+                    {/* Technology Tags */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {activeProject.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-0.5 border border-[var(--line)] bg-[var(--bg-raised)] text-[var(--ink)] font-mono text-[11px]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Project Status */}
+                    <div className="pt-1">{getStatusBadge(activeProject.status)}</div>
+
+                    {/* View Case Study CTA Button */}
+                    <div className="pt-2 flex items-center gap-3">
+                      <Link
+                        href={`/portfolio/${activeProject.slug}`}
+                        className="inline-flex items-center gap-2 bg-[var(--invert-bg)] text-[var(--invert-fg)] px-6 py-3 hud-label text-xs hover:opacity-90 transition-opacity group"
+                      >
+                        <span>View Architectural Case Study</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </Link>
+
+                      {/* Interactive Prev/Next Step Buttons */}
+                      <div className="flex items-center border border-[var(--line)] bg-[var(--bg-raised)]">
+                        <button
+                          onClick={() => handleManualSelect(Math.max(0, activeIdx - 1))}
+                          disabled={activeIdx === 0}
+                          className="h-9 w-9 flex items-center justify-center text-[var(--ink)] hover:bg-[var(--bg-sunken)] disabled:opacity-20 transition-colors cursor-pointer border-r border-[var(--line)]"
+                          aria-label="Previous Project"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleManualSelect(Math.min(PROJECTS.length - 1, activeIdx + 1))
+                          }
+                          disabled={activeIdx === PROJECTS.length - 1}
+                          className="h-9 w-9 flex items-center justify-center text-[var(--ink)] hover:bg-[var(--bg-sunken)] disabled:opacity-20 transition-colors cursor-pointer"
+                          aria-label="Next Project"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              {/* Vertical Rotated Project Label (Matching "DELTA" in Screenshot) */}
-              <div className="mt-6 [writing-mode:vertical-rl] text-[10px] uppercase font-mono tracking-[0.25em] text-gray-400 font-bold select-none">
-                {activeProject.shortCategory}
+              {/* CENTER / MAIN VISUAL AREA */}
+              <div className="lg:col-span-6 relative flex items-center justify-center min-h-[360px] sm:min-h-[420px] lg:min-h-[460px]">
+                <div className="relative w-full max-w-[420px] aspect-[4/5] mx-auto">
+                  {PROJECTS.map((project, idx) => {
+                    const offset = idx - activeIdx;
+                    const isVisible = offset >= 0 && offset <= 3;
+                    if (!isVisible) return null;
+
+                    return (
+                      <motion.div
+                        key={project.slug}
+                        initial={false}
+                        animate={{
+                          y: -offset * 18,
+                          scale: 1 - offset * 0.04,
+                          zIndex: 30 - offset,
+                          opacity: offset === 0 ? 1 : 1 - offset * 0.25,
+                        }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="absolute inset-0 overflow-hidden border border-[var(--line-strong)] bg-[var(--bg-raised)] shadow-xl flex flex-col justify-between"
+                        style={{
+                          transformOrigin: "bottom center",
+                        }}
+                      >
+                        {/* Image Preview Container */}
+                        <div className="relative w-full h-full bg-[#101014]">
+                          <Image
+                            src={project.image}
+                            alt={project.name}
+                            fill
+                            className="object-cover object-top transition-transform duration-700"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
+                            priority={idx === 0}
+                          />
+
+                          {/* Top Overlay Strip */}
+                          <div className="absolute top-0 inset-x-0 p-4 flex items-center justify-between bg-gradient-to-b from-black/80 via-black/40 to-transparent text-white z-10 pointer-events-none">
+                            <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-black/50 backdrop-blur-md border border-white/20">
+                              {project.number} / {project.total}
+                            </span>
+                            <span className="hud-label text-[10px] text-white/90">
+                              {project.shortCategory}
+                            </span>
+                          </div>
+
+                          {/* Bottom Content Overlay inside Card */}
+                          <div className="absolute bottom-0 inset-x-0 p-5 pt-10 bg-gradient-to-t from-black/90 via-black/60 to-transparent text-white z-10">
+                            <span className="hud-label text-[10px] text-[var(--accent)] font-bold block mb-1">
+                              CASE ARTIFACT // {project.number}
+                            </span>
+                            <h4
+                              className="text-lg sm:text-xl font-bold text-white leading-tight"
+                              style={{ fontFamily: "var(--font-display)" }}
+                            >
+                              {project.name}
+                            </h4>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* RIGHT / VERTICAL PROGRESS TRACK */}
+              <div className="hidden lg:flex lg:col-span-1 flex-col items-center justify-center pl-4">
+                <div className="flex items-baseline gap-0.5 font-mono text-center mb-6">
+                  <span className="text-2xl font-bold text-[var(--ink-strong)] leading-none">
+                    {activeProject.number}
+                  </span>
+                  <span className="text-xs text-[var(--faint)]">/{activeProject.total}</span>
+                </div>
+
+                {/* Vertical Progress Track */}
+                <div className="relative h-56 w-px bg-[var(--line)] flex flex-col justify-between items-center my-2">
+                  <motion.div
+                    className="absolute top-0 w-px bg-[var(--accent)]"
+                    animate={{
+                      height: `${(activeIdx / (PROJECTS.length - 1)) * 100}%`,
+                    }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  />
+
+                  {PROJECTS.map((p, idx) => (
+                    <button
+                      key={p.slug}
+                      onClick={() => handleManualSelect(idx)}
+                      className="relative z-20 h-4 w-4 -left-[7px] flex items-center justify-center cursor-pointer group"
+                      aria-label={`Jump to project ${idx + 1}`}
+                    >
+                      <span
+                        className={`h-2 w-2 transition-all duration-200 ${
+                          idx === activeIdx
+                            ? "bg-[var(--accent)] scale-125"
+                            : "bg-[var(--line-strong)] group-hover:bg-[var(--ink)]"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-6 [writing-mode:vertical-rl] hud-label text-[9px] text-[var(--faint)] select-none">
+                  {activeProject.shortCategory}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </BlueprintSection>
   );
 }

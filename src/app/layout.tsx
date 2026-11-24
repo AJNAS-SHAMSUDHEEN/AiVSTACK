@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CursorGlow } from "@/components/ui/CursorGlow";
 import { LiquidBackground } from "@/components/ui/LiquidBackground";
 import { FloatingRobotCompanion } from "@/components/layout/FloatingRobotCompanion";
+import { ScrollChoreographer } from "@/components/animation/ScrollChoreographer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -53,11 +54,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-[#FAFAFF] text-[#24202D] relative selection:bg-[#A78BFA]/30 selection:text-[#30224D]">
+      <body className="min-h-full flex flex-col font-sans bg-[var(--bg)] text-[var(--ink)] relative selection:bg-[var(--accent)] selection:text-white transition-colors duration-300">
+        <ScrollChoreographer />
         <LiquidBackground />
         <CursorGlow />
         <FloatingRobotCompanion />
